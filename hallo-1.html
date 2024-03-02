@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe</title>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+    }
+    .cell {
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container" id="board">
+    <div class="cell" onclick="handleMove(0)"></div>
+    <div class="cell" onclick="handleMove(1)"></div>
+    <div class="cell" onclick="handleMove(2)"></div>
+    <div class="cell" onclick="handleMove(3)"></div>
+    <div class="cell" onclick="handleMove(4)"></div>
+    <div class="cell" onclick="handleMove(5)"></div>
+    <div class="cell" onclick="handleMove(6)"></div>
+    <div class="cell" onclick="handleMove(7)"></div>
+    <div class="cell" onclick="handleMove(8)"></div>
+</div>
+<script>
+    let currentPlayer = 'X';
+    let gameBoard = ['', '', '', '', '', '', '', '', ''];
+
+    function handleMove(cellIndex) {
+        if (gameBoard[cellIndex] === '') {
+            gameBoard[cellIndex] = currentPlayer;
+            render();
+            if (checkWinner()) {
+                alert(currentPlayer + ' wins!');
+                reset();
+                return;
+            }
+            if (gameBoard.every(cell => cell !== '')) {
+                alert('It\'s a draw!');
+                reset();
+                return;
+            }
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+
+    function checkWinner() {
+        const winningCombos = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        return winningCombos.some(combo => {
+            return combo.every(index => gameBoard[index] === currentPlayer);
+        });
+    }
+
+    function reset() {
+        currentPlayer = 'X';
+        gameBoard = ['', '', '', '', '', '', '', '', ''];
+        render();
+    }
+
+    function render() {
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach((cell, index) => {
+            cell.textContent = gameBoard[index];
+        });
+    }
+</script>
+</body>
+</html>
