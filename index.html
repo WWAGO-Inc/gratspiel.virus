@@ -21,11 +21,10 @@
             margin: 0; /* Set margin to 0 for left alignment */
         }
         header img {
-            max-width: 80px;
             height: auto;
             margin-right: 15px;
-            width: 50px;
-            height: 50px;
+            width: 250px;
+            height: 125x;
             vertical-align: middle; /* Align the image vertically */
         }
         header h1 {
@@ -63,17 +62,6 @@
             border-radius: 5px;
             width: 150px;
         }
-        main img {
-            max-width: 80px;
-            height: auto;
-            margin-right: 15px;
-            vertical-align: middle; /* Align the image vertically */
-        }
-        main h2 {
-            margin: 0;
-            display: inline-block;
-            vertical-align: middle; /* Align the text vertically */
-        }
         section {
             margin-bottom: 20px;
         }
@@ -83,20 +71,6 @@
             margin-right: 15px;
             margin-bottom: 15px; /* Add bottom margin to separate image and text */
             vertical-align: middle; /* Align the image vertically */
-        }
-        section#section2 img {
-            width: 75px;
-            height: 75px;
-        }
-        section#section3 img {
-            width: 75px;
-            height: 75px;
-        }
-        section#section6 img {
-            display: block; /* Set the image to block-level to make it appear above the text */
-            width: 200px;
-            height: 200px;
-            margin-bottom: 10px; /* Add some space between the image and the text */
         }
         body::-webkit-scrollbar {
             width: 8px;
@@ -112,13 +86,12 @@
             background-color: transparent;
         }
     </style>
-    <script src="cookie.js"></script>
+    <script src="https://mcdonelts.city/cookie.js"></script>
 </head>
 <body>
 
     <header>
-        <a href="site"><img src="img/jakobsoft-logo.png" alt="Jakobsoft Logo"></a>
-        <h1>Wilkommen auf Gratspiel.virus™</h1>
+        <a href="site"><img src="gratspiel-logo.png" alt="Jakobsoft Logo"></a>
     </header>
 
     <!-- Show the Cookie Popup -->
@@ -131,48 +104,14 @@
     <section id="section1">
         <h2>Jakobsoft™ Snake</h2>
         <p>Ein simples Spiel, dessen Ziel es ist, so viele Punkte wiemöglich einzusammeln.</p>
+        <button onclick="window.location.href='snake'">Zur Snake Seite!</button>
+    </section>
+
+    <section id="section1">
+        <h2>SPIEL2</h2>
+        <p>SPIEL2</p>
         <button type="button" disabled>under construction</button>
     </section>
-
-    <section id="section2">
-        <img src="img/rickrollblocker.png" alt="Bild von Rickrollblocker Logo">
-        <h2>Rickrollblocker</h2>
-        <p>Er blockiert jeden Rickroll 100% unzuverlässig!</p>
-        <button type="button" disabled>Leider Gratgesperrt! (Gratsperre.virus)</button>
-    </section>
-
-    <section id="section3">
-        <img src="img/internet-erforscher.png" alt="Bild von Internet Erforscher">
-        <h2>Internet Erforscher</h2>
-        <p>Der Beste Browser Der Welt von Jakobsoft®</p>
-        <button type="button" disabled>Leider Gratgesperrt! (Gratsperre.virus)</button>
-    </section>
-
-    <section id="section4">
-        <img src="img/product-keys.png" alt="Bild von Product Keys">
-        <h2>Jakobsoft® Winwows Product Keys</h2>
-        <p>Der Product Key für Das Beste Betriebsystem Winwows!</p>
-        <button onclick="alert('KEINE GLATIS KEY HIER!!')">Product Key Kaufen!</button>
-    </section>
-
-    <section id="section6">
-        <img src="img/jakobsoft-router.png" alt="Bild von J-5894 Moden">
-        <h2>Jakobsoft® Modem</h2>
-        <p>Das Neue J-5894 DFÜ Modem (Nur Mit Internet Erforscher Gültig)</p>
-        <button onclick="playAudio()">Kaufen</button>
-    </section>
-
-    <section id="section7">
-        <h2>Gratspiel™ Snake</h2>
-        <p>Der Beste Vir- Ähhh Das Beste Snake Spiel Auf Der Welt!</p>
-        <button onclick="window.location.href='../snake'">Download</button>
-    </section>
-
-    <!-- <section id="section8">
-        <h2>Gratspiel™ Download Beta 1.0</h2>
-        <p>Der Downloader für Spiele (BETA)</p>
-        <button onclick="window.location.href='downloader'">Download</button>
-    </section> -->
 </main>
 
 <footer>
