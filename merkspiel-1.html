@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe with AI</title>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    td {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        text-align: center;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<h1>Tic Tac Toe with AI</h1>
+
+<label for="difficulty">Select Difficulty:</label>
+<select id="difficulty" onchange="changeDifficulty()">
+    <option value="easy">Easy</option>
+    <option value="hard">Hard</option>
+</select>
+
+<table id="board">
+    <tr>
+        <td onclick="makeMove(0, 0)"></td>
+        <td onclick="makeMove(0, 1)"></td>
+        <td onclick="makeMove(0, 2)"></td>
+    </tr>
+    <tr>
+        <td onclick="makeMove(1, 0)"></td>
+        <td onclick="makeMove(1, 1)"></td>
+        <td onclick="makeMove(1, 2)"></td>
+    </tr>
+    <tr>
+        <td onclick="makeMove(2, 0)"></td>
+        <td onclick="makeMove(2, 1)"></td>
+        <td onclick="makeMove(2, 2)"></td>
+    </tr>
+</table>
+
+<p id="message"></p>
+
+<script>
+    var currentPlayer = 'X';
+    var board = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+    var difficulty = 'easy';
+
+    function makeMove(row, col) {
+        if (board[row][col] === '' && currentPlayer === 'X') {
+            board[row][col] = currentPlayer;
+            document.getElementById('board').rows[row].cells[col].innerText = currentPlayer;
+
+            if (checkWinner(row, col)) {
+                document.getElementById('message').innerText = "Player " + currentPlayer + " wins!";
+                disableBoard();
+            } else if (checkDraw()) {
+                document.getElementById('message').innerText = "It's a draw!";
+                disableBoard();
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                if (currentPlayer === 'O') {
+                    setTimeout(makeAIMove, 500); // Delay AI move for better UX
+                }
+            }
+        }
+    }
+
+    function makeAIMove() {
+        if (currentPlayer === 'O') {
+            var move = getBestMove();
+            var row = move[0];
+            var col = move[1];
+            board[row][col] = currentPlayer;
+            document.getElementById('board').rows[row].cells[col].innerText = currentPlayer;
+
+            if (checkWinner(row, col)) {
+                document.getElementById('message').innerText = "Player " + currentPlayer + " wins!";
+                disableBoard();
+            } else if (checkDraw()) {
+                document.getElementById('message').innerText = "It's a draw!";
+                disableBoard();
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+    }
+
+    function getBestMove() {
+        if (difficulty === 'easy') {
+            // Easy: Random move
+            var availableMoves = [];
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (board[i][j] === '') {
+                        availableMoves.push([i, j]);
+                    }
+                }
+            }
+            return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        } else if (difficulty === 'hard') {
+            // Hard: Minimax Algorithm
+            var bestScore = -Infinity;
+            var move;
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (board[i][j] === '') {
+                        board[i][j] = 'O';
+                        var score = minimax(board, 0, false);
+                        board[i][j] = '';
+                        if (score > bestScore) {
+                            bestScore = score;
+                            move = [i, j];
+                        }
+                    }
+                }
+            }
+            return move;
+        }
+    }
+
+    function minimax(board, depth, isMaximizing) {
+        var result = checkResult();
+        if (result !== null) {
+            if (result === 'X') {
+                return -10 + depth;
+            } else if (result === 'O') {
+                return 10 - depth;
+            } else {
+                return 0;
+            }
+        }
+
+        if (isMaximizing) {
+            var bestScore = -Infinity;
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (board[i][j] === '') {
+                        board[i][j] = 'O';
+                        var score = minimax(board, depth + 1, false);
+                        board[i][j] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+            }
+            return bestScore;
+        } else {
+            var bestScore = Infinity;
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (board[i][j] === '') {
+                        board[i][j] = 'X';
+                        var score = minimax(board, depth + 1, true);
+                        board[i][j] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+            }
+            return bestScore;
+        }
+    }
+
+    function checkResult() {
+        // Check rows
+        for (var i = 0; i < 3; i++) {
+            if (board[i][0] !== '' && board[i][0] === board[i][1] && board[i][0] === board[i][2]) {
+                return board[i][0];
+            }
+        }
+        // Check columns
+        for (var j = 0; j < 3; j++) {
+            if (board[0][j] !== '' && board[0][j] === board[1][j] && board[0][j] === board[2][j]) {
+                return board[0][j];
+            }
+        }
+        // Check diagonals
+        if (board[0][0] !== '' && board[0][0] === board[1][1] && board[0][0] === board[2][2]) {
+            return board[0][0];
+        }
+        if (board[0][2] !== '' && board[0][2] === board[1][1] && board[0][2] === board[2][0]) {
+            return board[0][2];
+        }
+        // Check for draw
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                if (board[i][j] === '') {
+                    return null; // Game still ongoing
+                }
+            }
+        }
+        return 'draw'; // Game is a draw
+    }
+
+    function checkWinner(row, col) {
+        // Check row
+        if (board[row][0] === currentPlayer && board[row][1] === currentPlayer && board[row][2] === currentPlayer) {
+            return true;
+        }
+        // Check column
+        if (board[0][col] === currentPlayer && board[1][col] === currentPlayer && board[2][col] === currentPlayer) {
+            return true;
+        }
+        // Check diagonals
+        if ((row === col || row + col === 2) &&
+            (board[0][0] === currentPlayer && board[1][1] === currentPlayer && board[2][2] === currentPlayer ||
+                board[0][2] === currentPlayer && board[1][1] === currentPlayer && board[2][0] === currentPlayer)) {
+            return true;
+        }
+        return false;
+    }
+
+    function checkDraw() {
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                if (board[i][j] === '') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    function disableBoard() {
+        var cells = document.getElementsByTagName('td');
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].onclick = null;
+        }
+    }
+
+    function changeDifficulty() {
+        difficulty = document.getElementById('difficulty').value;
+        if (currentPlayer === 'O') {
+            makeAIMove();
+        }
+    }
+</script>
+
+</body>
+</html>
